@@ -17,7 +17,7 @@ type Mutation {
 
   confirmEmail(email: String!, confirmationToken: String!): signUpPayload
 
-  login: AuthPayload
+  login(email: String!, password: String!): AuthPayload
 
   logout: signUpPayload
 

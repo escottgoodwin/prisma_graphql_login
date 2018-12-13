@@ -57,7 +57,7 @@ async function signup(parent, args, ctx, info) {
   const msg = {
     to: args.email,
     subject: 'Confirm your email address',
-    text: `Click on this link to resend your password https://example.com/reset?token=${confirmationToken}&email=${user.email} This token will expire in 2 hours.`,
+    text: `Click on this link to confirm your email address: https://example.com/reset?token=${confirmationToken}&email=${user.email} This token will expire in 2 hours.`,
     html: htmlEmail,
   };
 
