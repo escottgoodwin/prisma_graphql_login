@@ -301,7 +301,7 @@ async function login(parent, args, ctx, info) {
   return {
     token,
     authMsg: loggedInMsg,
-    user: confirmUser
+    user: userupdate
   }
 }
 
