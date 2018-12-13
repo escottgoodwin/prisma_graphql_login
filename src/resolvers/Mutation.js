@@ -227,7 +227,7 @@ async function confirmEmail(parent, args, ctx, info) {
         id: confirmUser1[0].id
       },
     },
-    `{ id firstName lastName email role confirmed }`
+    `{ id firstName lastName email confirmed }`
   )
 
   const htmlEmail =
@@ -292,7 +292,7 @@ async function login(parent, args, ctx, info) {
         id: user.id,
       },
     },
-    ` { id password firstName lastName role } `
+    ` { id password firstName lastName } `
   )
 
   const loggedInMsg = 'You have successfully logged in'
