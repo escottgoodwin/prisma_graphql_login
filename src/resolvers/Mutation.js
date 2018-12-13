@@ -319,7 +319,7 @@ async function logout(parent, args, ctx, info) {
         online:false
       },
       where: {
-        id: user.id,
+        id: userId,
       },
     },
     ` { id firstName lastName } `
@@ -335,51 +335,6 @@ async function logout(parent, args, ctx, info) {
   }
 }
 
-async function deleteAccount(parent, args, ctx, info) {
-  //prevents unauthorized user from logging out - checks authorization token to get current userId
-  const userId = await getUserId(ctx)
-
-  if (!userId) {
-    throw new Error('There has been a problem deleting your account.')
-  }
-
-  const deleteUser = await ctx.db.mutation.deleteUser(
-    {
-      where: {
-        id: userId,
-      },
-    },
-    ` { id firstName lastName } `
-  )
-
-  const htmlEmail =
-    `<html>
-    <head>
-      <title>Account Deleted</title>
-    </head>
-    <body>
-      <p>Hi ${deleteUser.firstName} ${deleteUser.lastName},</p>
-      <p>Your account has been deleted</p>
-    </body>
-    </html>`
-
-  const msg = {
-    to: args.email,
-    subject: 'Account Deleted',
-    text: 'Your account has been deleted',
-    html: htmlEmail,
-  };
-
-  sendGridSend(msg)
-
-  deleteRequestMsg = `${deleteUser.firstName} ${deleteUser.lastName}, Your account has been deleted.`
-
-  return {
-    authMsg: deleteRequestMsg,
-    user: deleteUser
-  }
-}
-
 // Rest of your mutations
 
 module.exports = {
@@ -389,6 +344,5 @@ module.exports = {
   confirmEmail,
   login,
   logout,
-  deleteAccount
   // rest of mutations to export
 }
