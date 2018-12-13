@@ -1,0 +1,8 @@
+endpoint: https://pg-login-3a81fca7cc.herokuapp.com/database/dev
+datamodel: datamodel.prisma
+
+hooks:
+  post-deploy:
+    - graphql get-schema --project database
+
+secret: mysecret123

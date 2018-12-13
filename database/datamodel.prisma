@@ -1,0 +1,15 @@
+type User {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  firstName: String!
+  lastName: String!
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}

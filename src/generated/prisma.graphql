@@ -1,0 +1,649 @@
+# source: https://pg-login-3a81fca7cc.herokuapp.com/database/dev
+# timestamp: Thu Dec 13 2018 11:54:37 GMT-0800 (Pacific Standard Time)
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+scalar DateTime
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteUser(where: UserWhereUniqueInput!): User
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  user(where: UserWhereUniqueInput!): User
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  lastLogin_ASC
+  lastLogin_DESC
+  signUpDate_ASC
+  signUpDate_DESC
+  online_ASC
+  online_DESC
+  pushToken_ASC
+  pushToken_DESC
+  resetToken_ASC
+  resetToken_DESC
+  confirmationToken_ASC
+  confirmationToken_DESC
+  tokenExpirationTime_ASC
+  tokenExpirationTime_DESC
+  confirmed_ASC
+  confirmed_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}
+
+input UserUpdateManyMutationInput {
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  lastLogin: DateTime
+  signUpDate: DateTime
+  online: Boolean
+  pushToken: String
+  resetToken: String
+  confirmationToken: String
+  tokenExpirationTime: DateTime
+  confirmed: Boolean
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  firstName: String
+
+  """All values that are not equal to given value."""
+  firstName_not: String
+
+  """All values that are contained in given list."""
+  firstName_in: [String!]
+
+  """All values that are not contained in given list."""
+  firstName_not_in: [String!]
+
+  """All values less than the given value."""
+  firstName_lt: String
+
+  """All values less than or equal the given value."""
+  firstName_lte: String
+
+  """All values greater than the given value."""
+  firstName_gt: String
+
+  """All values greater than or equal the given value."""
+  firstName_gte: String
+
+  """All values containing the given string."""
+  firstName_contains: String
+
+  """All values not containing the given string."""
+  firstName_not_contains: String
+
+  """All values starting with the given string."""
+  firstName_starts_with: String
+
+  """All values not starting with the given string."""
+  firstName_not_starts_with: String
+
+  """All values ending with the given string."""
+  firstName_ends_with: String
+
+  """All values not ending with the given string."""
+  firstName_not_ends_with: String
+  lastName: String
+
+  """All values that are not equal to given value."""
+  lastName_not: String
+
+  """All values that are contained in given list."""
+  lastName_in: [String!]
+
+  """All values that are not contained in given list."""
+  lastName_not_in: [String!]
+
+  """All values less than the given value."""
+  lastName_lt: String
+
+  """All values less than or equal the given value."""
+  lastName_lte: String
+
+  """All values greater than the given value."""
+  lastName_gt: String
+
+  """All values greater than or equal the given value."""
+  lastName_gte: String
+
+  """All values containing the given string."""
+  lastName_contains: String
+
+  """All values not containing the given string."""
+  lastName_not_contains: String
+
+  """All values starting with the given string."""
+  lastName_starts_with: String
+
+  """All values not starting with the given string."""
+  lastName_not_starts_with: String
+
+  """All values ending with the given string."""
+  lastName_ends_with: String
+
+  """All values not ending with the given string."""
+  lastName_not_ends_with: String
+  lastLogin: DateTime
+
+  """All values that are not equal to given value."""
+  lastLogin_not: DateTime
+
+  """All values that are contained in given list."""
+  lastLogin_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  lastLogin_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  lastLogin_lt: DateTime
+
+  """All values less than or equal the given value."""
+  lastLogin_lte: DateTime
+
+  """All values greater than the given value."""
+  lastLogin_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  lastLogin_gte: DateTime
+  signUpDate: DateTime
+
+  """All values that are not equal to given value."""
+  signUpDate_not: DateTime
+
+  """All values that are contained in given list."""
+  signUpDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  signUpDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  signUpDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  signUpDate_lte: DateTime
+
+  """All values greater than the given value."""
+  signUpDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  signUpDate_gte: DateTime
+  online: Boolean
+
+  """All values that are not equal to given value."""
+  online_not: Boolean
+  pushToken: String
+
+  """All values that are not equal to given value."""
+  pushToken_not: String
+
+  """All values that are contained in given list."""
+  pushToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  pushToken_not_in: [String!]
+
+  """All values less than the given value."""
+  pushToken_lt: String
+
+  """All values less than or equal the given value."""
+  pushToken_lte: String
+
+  """All values greater than the given value."""
+  pushToken_gt: String
+
+  """All values greater than or equal the given value."""
+  pushToken_gte: String
+
+  """All values containing the given string."""
+  pushToken_contains: String
+
+  """All values not containing the given string."""
+  pushToken_not_contains: String
+
+  """All values starting with the given string."""
+  pushToken_starts_with: String
+
+  """All values not starting with the given string."""
+  pushToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  pushToken_ends_with: String
+
+  """All values not ending with the given string."""
+  pushToken_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  confirmationToken: String
+
+  """All values that are not equal to given value."""
+  confirmationToken_not: String
+
+  """All values that are contained in given list."""
+  confirmationToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  confirmationToken_not_in: [String!]
+
+  """All values less than the given value."""
+  confirmationToken_lt: String
+
+  """All values less than or equal the given value."""
+  confirmationToken_lte: String
+
+  """All values greater than the given value."""
+  confirmationToken_gt: String
+
+  """All values greater than or equal the given value."""
+  confirmationToken_gte: String
+
+  """All values containing the given string."""
+  confirmationToken_contains: String
+
+  """All values not containing the given string."""
+  confirmationToken_not_contains: String
+
+  """All values starting with the given string."""
+  confirmationToken_starts_with: String
+
+  """All values not starting with the given string."""
+  confirmationToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  confirmationToken_ends_with: String
+
+  """All values not ending with the given string."""
+  confirmationToken_not_ends_with: String
+  tokenExpirationTime: DateTime
+
+  """All values that are not equal to given value."""
+  tokenExpirationTime_not: DateTime
+
+  """All values that are contained in given list."""
+  tokenExpirationTime_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  tokenExpirationTime_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  tokenExpirationTime_lt: DateTime
+
+  """All values less than or equal the given value."""
+  tokenExpirationTime_lte: DateTime
+
+  """All values greater than the given value."""
+  tokenExpirationTime_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  tokenExpirationTime_gte: DateTime
+  confirmed: Boolean
+
+  """All values that are not equal to given value."""
+  confirmed_not: Boolean
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
